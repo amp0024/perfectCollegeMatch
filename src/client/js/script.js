@@ -1,44 +1,65 @@
-(function(window, $) {
+// (function(window, $) {
   
-  var $mapster = $('#map-canvas').mapster(Mapster.MAP_OPTIONS),
-      geocoder = new google.maps.Geocoder();
+//   var $mapster = $('#map-canvas').mapster(Mapster.MAP_OPTIONS),
+//       geocoder = new google.maps.Geocoder();
   
-  // $mapster.mapster('addMarker', {
-  //   lat: 37.791350,
-  //   lng: -122.435883
-  // });  
+//   // $mapster.mapster('addMarker', {
+//   //   lat: 37.791350,
+//   //   lng: -122.435883
+//   // });  
   
-  $mapster.mapster('addMarker', {
-    location: '1111 Main Street'
-  });
-  $mapster.mapster('addMarker', {
-    location: '10261 Macedonia Street'
-  });
+//   $mapster.mapster('addMarker', {
+//     location: '1111 Main Street'
+//   });
+//   $mapster.mapster('addMarker', {
+//     location: '10261 Macedonia Street'
+//   });
   
-  // function geocode(opts) {
-  //   geocoder.geocode({ 
-  //     address: opts.address
-  //   }, function(results, status) {
-  //     if (status === google.maps.GeocoderStatus.OK) {
-  //       opts.success.call(this, results, status);
-  //     } else {
-  //       opts.error.call(this, status);
-  //     }
-  //   });
-  // }
+//   // function geocode(opts) {
+//   //   geocoder.geocode({ 
+//   //     address: opts.address
+//   //   }, function(results, status) {
+//   //     if (status === google.maps.GeocoderStatus.OK) {
+//   //       opts.success.call(this, results, status);
+//   //     } else {
+//   //       opts.error.call(this, status);
+//   //     }
+//   //   });
+//   // }
   
-  // geocode({
-  //   address: 'Coors Field, Denver, CO',
-  //   success: function(results) {
-  //     var result = results[0];
-  //     $mapster.mapster('addMarker', {
-  //       lat: result.geometry.location.lat(),
-  //       lng: result.geometry.location.lng()
-  //     })
-  //   },
-  //   error: function(status) {
-  //     console.error(status);
-  //   }
-  // })
+//   // geocode({
+//   //   address: 'Coors Field, Denver, CO',
+//   //   success: function(results) {
+//   //     var result = results[0];
+//   //     $mapster.mapster('addMarker', {
+//   //       lat: result.geometry.location.lat(),
+//   //       lng: result.geometry.location.lng()
+//   //     })
+//   //   },
+//   //   error: function(status) {
+//   //     console.error(status);
+//   //   }
+//   // })
 
-}(window, jQuery));
+// }(window, jQuery));
+
+function myFn (addresses) {
+	var $mapster = $('#map-canvas').mapster(Mapster.MAP_OPTIONS),
+	    geocoder = new google.maps.Geocoder();
+
+	    $mapster.mapster('getCurrentPosition', function(position){
+	    		$mapster.mapster("addMarker",{
+	    			lat: position.coords.latitude,
+	    			lng: position.coords.longitude,
+	    			icon: 'mapicons/youarehere.png',
+	    			content: 'You are here.'
+	    		});
+	    });
+
+	addresses.forEach(function (address) {
+		$mapster.mapster('addMarker', {
+		  location: address,
+		  content: 'test'
+		});
+	});
+}

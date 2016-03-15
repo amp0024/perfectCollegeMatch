@@ -49,6 +49,10 @@
       markers: function() {
         return this.map.markers.items;
       },
+
+      getCurrentPosition: function(callback){
+        this.map.getCurrentPosition(callback)
+      },
       
       setPano: function(selector, opts) {
         var elements = $(selector),
