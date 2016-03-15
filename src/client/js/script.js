@@ -4,6 +4,57 @@ var locations = [
     ['Location 3 Name', 'Philadelphia, PA', 'Location 3 URL']
 ];
 
+
+var styles = [{
+    featureType: 'all',
+    elementType: 'labels',
+    stylers: [
+      { visibility: 'on' }  
+    ]
+  }, {
+    featureType: 'water',
+    elementType: 'geometry',
+    stylers: [
+      { color: '#4a6eff',
+        visibility: 'on' }  
+    ]
+  }, {
+    featureType: 'landscape',
+    elementType: 'geometry',
+    stylers: [
+      { color: '#c7c7c7',
+      	visibility: 'on' }  
+    ]
+  }, {
+    featureType: 'poi',
+    elementType: 'geometry',
+    stylers: [
+      { color: '#a6a6a6',
+      	visibility: 'on' }  
+    ]
+  }, {
+    featureType: 'transit',
+    elementType: 'geometry', 
+    stylers: [
+      { color: '#a6a6a6',
+      	visibility: 'on' }  
+    ]
+  }, {
+    featureType: 'road.highway',
+    elementType: 'geometry',
+    stylers: [
+      { color: '#404040',
+      	visibility: 'on' }  
+    ]
+  }, {
+    featureType: 'road.arterial',
+    elementType: 'geometry',
+    stylers: [
+      { color: '#ecf0f1',
+      	visibility: 'on' }  
+    ]
+  }];	
+
 var geocoder;
 var map;
 var bounds = new google.maps.LatLngBounds();
@@ -13,7 +64,8 @@ function initialize() {
     document.getElementById("map_canvas"), {
         center: new google.maps.LatLng(37.4419, -122.1419),
         zoom: 13,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+	    styles: styles
     });
     geocoder = new google.maps.Geocoder();
 
@@ -43,7 +95,7 @@ function geocodeAddress(locations, i) {
                 animation: google.maps.Animation.DROP,
                 address: address,
                 url: url
-            })
+            });
             infoWindow(marker, map, title, address, url);
             bounds.extend(marker.getPosition());
             map.fitBounds(bounds);
@@ -73,7 +125,7 @@ function createMarker(results) {
         animation: google.maps.Animation.DROP,
         address: address,
         url: url
-    })
+    });
     bounds.extend(marker.getPosition());
     map.fitBounds(bounds);
     infoWindow(marker, map, title, address, url);
