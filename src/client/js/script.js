@@ -1,8 +1,24 @@
 var locations = [
-    ['Test', '10261 Macedonia St, CO', 'Location 1 URL'],
-    ['Location 2 Name', 'Newark, NJ', 'Location 2 URL'],
-    ['Location 3 Name', 'Philadelphia, PA', 'Location 3 URL']
+    // ['Brewery Name', 'Address, City, State', 'Zip', 'description', 'image'],
+    ['Breckenridge Brewery', '10261 Macedonia St., Longmont, CO', '80503', 'Very nice and neat brewery', '/brewery/:id'],
+    ['Test Brewery', 'Lakewood, Ohio', '80503', 'Very nice and neat brewery', 'test.com']
 ];
+
+
+// exports.up = function(knex, Promise) {
+//   return knex.schema.createTable('breweries', function(table) {
+//     table.increments();
+//     table.string('name');
+//     table.string('address');
+//     table.string('city');
+//     table.string('state');
+//     table.integer('zip');
+//     table.integer('beer_id');
+//     table.string('description');
+//     table.string('image');
+//     table.timestamp('created_at').defaultTo(knex.fn.now());
+//   });
+// };
 
 
 var styles = [{
@@ -59,7 +75,8 @@ var geocoder;
 var map;
 var bounds = new google.maps.LatLngBounds();
 
-function initialize() {
+function init() {
+
     map = new google.maps.Map(
     document.getElementById("map_canvas"), {
         center: new google.maps.LatLng(37.4419, -122.1419),
@@ -75,12 +92,13 @@ function initialize() {
         geocodeAddress(locations, i);
     }
 }
-google.maps.event.addDomListener(window, "load", initialize);
+google.maps.event.addDomListener(window, "load", init);
 
 function geocodeAddress(locations, i) {
     var title = locations[i][0];
     var address = locations[i][1];
-    var url = locations[i][2];
+    var description = locations[i][3];
+    var page = locations[i][4];
     geocoder.geocode({
         'address': locations[i][1]
     },
@@ -94,9 +112,10 @@ function geocodeAddress(locations, i) {
                 title: title,
                 animation: google.maps.Animation.DROP,
                 address: address,
-                url: url
+                description: description,
+                page: page
             });
-            infoWindow(marker, map, title, address, url);
+            infoWindow(marker, map, title, address, description, page);
             bounds.extend(marker.getPosition());
             map.fitBounds(bounds);
         } else {
@@ -105,9 +124,9 @@ function geocodeAddress(locations, i) {
     });
 }
 
-function infoWindow(marker, map, title, address, url) {
+function infoWindow(marker, map, title, address, description, page) {
     google.maps.event.addListener(marker, 'click', function () {
-        var html = "<div><h3>" + title + "</h3><p>" + address + "<br></div><a href='" + url + "'>View location</a></p></div>";
+        var html = "<div><h3>" + title + "</h3><p>" + address + "<br><br>" + description + "<br></div><a href='" + page + "'>View Brewery Info</a></p></div>";
         iw = new google.maps.InfoWindow({
             content: html,
             maxWidth: 350
@@ -124,7 +143,8 @@ function createMarker(results) {
         title: title,
         animation: google.maps.Animation.DROP,
         address: address,
-        url: url
+        description: description,
+        image: image
     });
     bounds.extend(marker.getPosition());
     map.fitBounds(bounds);
